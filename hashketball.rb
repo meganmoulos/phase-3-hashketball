@@ -1,3 +1,5 @@
+require 'pry'
+
 # Write your code below game_hash
 def game_hash
   {
@@ -126,4 +128,58 @@ def game_hash
   }
 end
 
-# Write code here
+# Helper methods
+
+# Array of all players
+def all_players
+  game_hash[:home][:players] + game_hash[:away][:players]
+end
+
+# Find the team names
+def find_team(team_name)
+  team_info = game_hash.find {|location, team_data| 
+    team_data[:team_name] == team_name
+  }  
+  team_info[1] # to get the value without the key
+end
+
+# Find player with biggest shoe size
+def big_shoe_player
+  all_players.max_by {|player| player[:shoe]}
+end
+
+
+# Required methods
+
+# Returns hash of player's stats
+def player_stats(player_name)
+  all_players.find {|player_hash| player_hash[:player_name] == player_name}
+end
+
+def num_points_scored(player_name)
+  player_stats(player_name)[:points]
+end
+
+def shoe_size(player_name)
+  player_stats(player_name)[:shoe]
+end
+
+def team_colors(team_name)
+  team = find_team(team_name)
+  team[:colors]
+end
+
+def team_names
+  game_hash.map {|location, team_data| 
+    team_data[:team_name]
+  }
+end
+
+def player_numbers(team_name)
+  team = find_team(team_name)
+  team[:players].map {|p| p[:number]}
+end
+
+def big_shoe_rebounds
+  big_shoe_player[:rebounds]
+end
